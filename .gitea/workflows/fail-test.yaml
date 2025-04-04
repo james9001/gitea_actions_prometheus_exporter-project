@@ -1,0 +1,17 @@
+---
+name: Fail Test
+run-name: Fail Test
+on:
+  workflow_dispatch:
+
+jobs:
+  Fail-Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sleep 3 seconds
+        run: |
+          sleep 3
+          echo "zzz..."
+      - name: Exit with a fail code
+        run: |
+          exit 1

@@ -1,0 +1,75 @@
+---
+networks:
+  gitea_actions_prometheus_exporter-net:
+
+services:
+  gitea:
+    image: gitea/gitea:1.23.6
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=postgres:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=gitea
+      - GITEA_RUNNER_REGISTRATION_TOKEN=thismustbeatleast32randomcharacters
+    restart: unless-stopped
+    networks:
+      gitea_actions_prometheus_exporter-net:
+    volumes:
+      - ./localdev/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+
+  gitea_act_runner:
+    image: gitea/act_runner:0.2.11
+    container_name: gitea_act_runner
+    restart: unless-stopped
+    networks:
+      gitea_actions_prometheus_exporter-net:
+    depends_on:
+      - gitea
+    environment:
+      - GITEA_INSTANCE_URL=http://gitea:3000
+      - GITEA_RUNNER_REGISTRATION_TOKEN=thismustbeatleast32randomcharacters
+    volumes:
+      - ./localdev/runner:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  postgres:
+    image: docker.io/library/postgres:14
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=gitea
+      - POSTGRES_DB=gitea
+    networks:
+      - gitea_actions_prometheus_exporter-net
+    volumes:
+      - ./localdev/postgres/data:/var/lib/postgresql/data
+
+  gitea_actions_prometheus_exporter:
+    image: gitea_actions_prometheus_exporter:latest
+    container_name: gitea_actions_prometheus_exporter
+    restart: unless-stopped
+    networks:
+      gitea_actions_prometheus_exporter-net:
+    ports:
+      - 9100:9100
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=gitea
+      - DB_PASSWORD=gitea
+      - DB_NAME=gitea
+      - SERVER_PORT=9100
+      - UPDATE_INTERVAL=5

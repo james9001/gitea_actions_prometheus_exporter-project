@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+/localdev/gitea/*
+!/localdev/gitea/.gitkeep
+/localdev/postgres/*
+!/localdev/postgres/.gitkeep
+/localdev/runner/*
+!/localdev/runner/.gitkeep
