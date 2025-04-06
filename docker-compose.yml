@@ -56,7 +56,7 @@ services:
       - ./localdev/postgres/data:/var/lib/postgresql/data
 
   gitea_actions_prometheus_exporter:
-    image: gitea_actions_prometheus_exporter:latest
+    image: james9001/gitea_actions_prometheus_exporter:latest
     container_name: gitea_actions_prometheus_exporter
     restart: unless-stopped
     networks:

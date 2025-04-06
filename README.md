@@ -4,8 +4,7 @@ The purpose of this repository is to provide a simple solution for testing the [
 
 ## Setting up the environment
 
-- Run `build.sh` from the https://github.com/james9001/gitea_actions_prometheus_exporter repository before bringing up this stack
-- `docker compose up` and wait for the containers to come up
+- Run `docker compose up` and wait for the containers to come up
 - Navigate to http://localhost:3000, go to the bottom and click Install Gitea
 - After it finishes installing, you'll see the login page - click "Register now" at the bottom. Set up a user account, this will become the global admin
 - Check http://localhost:3000/-/admin/actions/runners as the act runner should be registered (just the one)
