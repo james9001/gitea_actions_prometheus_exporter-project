@@ -12,7 +12,7 @@ The purpose of this repository is to provide a simple solution for testing the [
 - You should now be able to use the workflow_dispatch GUI from the Actions tab of the remote repo to start a `fail-test.yaml` job
 - Check the output: `curl http://localhost:9100/metrics`. When `fail-test.yaml` is finished, the counter metrics reporting failures will increment
 
-## Developing
+### Local Development
 
 - `pre-commit install` to install hooks
 - Install the Pip3 package `xmlformatter` i.e. `pip3 install xmlformatter --break-system-packages`
